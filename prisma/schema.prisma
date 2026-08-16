@@ -1,11 +1,13 @@
 // MUCS — Murdoch Cyber Security Club
-// Phase 1 schema: public site content only (Event, TeamMember, NewsArticle,
+// Phase 1: public site content (Event, TeamMember, NewsArticle,
 // Announcement, SiteSetting) plus ContactSubmission to back the Contact form.
+// Phase 2: AdminUser — an allowlist gating the /admin CMS, backed by
+// Supabase Auth for actual sign-in (see src/lib/supabase/).
 //
-// Deliberately NOT modelled yet (Phase 2+): User, Registration, Ticket,
-// Donation, Sponsor. Ids are cuid strings and models are kept independent
-// so those can be added later (e.g. Registration -> Event, User) without
-// reshaping what's here.
+// Deliberately NOT modelled yet: public member accounts, Registration,
+// Ticket, Donation, Sponsor. Ids are cuid strings and models are kept
+// independent so those can be added later (e.g. Registration -> Event,
+// a future public User) without reshaping what's here.
 //
 // Docs: https://pris.ly/d/prisma-schema
 
@@ -122,4 +124,22 @@ model ContactSubmission {
   createdAt DateTime @default(now())
 
   @@index([createdAt])
+}
+
+/// Allowlist gating access to /admin. Identity/session come from Supabase
+/// Auth, but a valid session alone is NOT enough to reach the admin CMS —
+/// the signed-in email must have a row here. Kept as a separate table
+/// (rather than "any authenticated user is an admin") so a future public
+/// member-accounts phase can add its own Supabase Auth users without any
+/// of them silently gaining admin access.
+model AdminUser {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String?
+  /// Filled in on first successful sign-in; null until then.
+  supabaseUserId String?   @unique
+  /// Set alongside supabaseUserId on first sign-in. Not bumped on every
+  /// later request — "first seen", not a live last-active timestamp.
+  lastSignInAt   DateTime?
+  createdAt      DateTime  @default(now())
 }
