@@ -4,6 +4,7 @@ import { getSupabaseUser } from "@/lib/admin/auth";
 import { prisma } from "@/lib/prisma";
 import { Container } from "@/components/ui/Container";
 import { LoginForm } from "./LoginForm";
+import { CodeForm } from "./CodeForm";
 
 export const metadata: Metadata = { title: "Admin sign in" };
 
@@ -27,6 +28,21 @@ export default async function AdminLoginPage() {
           </p>
         </div>
         <LoginForm />
+
+        <div className="my-8 flex items-center gap-4 text-xs uppercase tracking-wide text-foreground-muted">
+          <span className="h-px flex-1 bg-border" />
+          Or
+          <span className="h-px flex-1 bg-border" />
+        </div>
+
+        <div className="flex flex-col gap-2 pb-4">
+          <h2 className="text-sm font-semibold text-foreground">Have a sign-in code?</h2>
+          <p className="text-xs text-foreground-muted">
+            If a link didn&apos;t work (expired, or a security scanner opened it before you could), enter the code
+            instead.
+          </p>
+        </div>
+        <CodeForm />
       </Container>
     </main>
   );
