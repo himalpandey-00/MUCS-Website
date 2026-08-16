@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
 import { Tag } from "@/components/ui/Tag";
@@ -143,13 +144,19 @@ export default async function HomePage() {
             Membership is free and open to all Murdoch students, any degree, any year. Sign up at O-Week or
             drop into a Thursday meetup.
           </p>
-          <ButtonLink
+          {/* Not <ButtonLink variant="secondary">: that variant's own
+              text-foreground/border-border classes and these override
+              classes both set the same properties, and which one wins is
+              decided by Tailwind's internal utility order, not by where
+              they sit in this class string — that's what produced the
+              white-on-white bug here. A self-contained className sidesteps
+              the conflict entirely. */}
+          <Link
             href="/contact"
-            variant="secondary"
-            className="border-white bg-white text-deep-red hover:border-white hover:bg-white/90 hover:text-deep-red"
+            className="inline-flex items-center justify-center gap-2 rounded-md border border-white bg-white px-5 py-2.5 text-sm font-heading font-bold uppercase tracking-wide text-deep-red transition-colors duration-150 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-murdoch-red"
           >
             Get in touch
-          </ButtonLink>
+          </Link>
         </Container>
       </section>
     </>

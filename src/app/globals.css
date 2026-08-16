@@ -79,43 +79,53 @@
      without hunting for hardcoded colours in components. */
 }
 
-* {
-  border-color: var(--border);
-}
+/* Tailwind v4 uses CSS cascade layers (@import "tailwindcss" above expands
+   to @layer theme, base, components, utilities). Unlayered CSS always
+   beats every layered rule regardless of selector specificity or source
+   order — so plain rules here MUST live in @layer base, or they'll
+   silently win over every Tailwind utility touching the same element/
+   property (e.g. a bare `a { color: inherit }` here would beat
+   `.text-deep-red` on every link, no matter how specific or how the
+   classes are ordered in JSX — this bit us once already, see git log). */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
 
-html {
-  scroll-behavior: smooth;
-}
+  html {
+    scroll-behavior: smooth;
+  }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans), system-ui, sans-serif;
-  -webkit-font-smoothing: antialiased;
-}
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: var(--font-heading), system-ui, sans-serif;
-  letter-spacing: -0.01em;
-  font-weight: 700;
-}
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading), system-ui, sans-serif;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
 
-::selection {
-  background: color-mix(in srgb, var(--murdoch-red) 35%, transparent);
-  color: var(--ink);
-}
+  ::selection {
+    background: color-mix(in srgb, var(--murdoch-red) 35%, transparent);
+    color: var(--ink);
+  }
 
-:focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 3px;
-  border-radius: 2px;
-}
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
 
-a {
-  color: inherit;
+  a {
+    color: inherit;
+  }
 }
