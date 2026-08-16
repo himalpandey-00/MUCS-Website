@@ -41,14 +41,14 @@ export default async function AdminAnnouncementsPage() {
                 <tr key={announcement.id} className="border-b border-border last:border-0">
                   <td className="px-4 py-3 font-medium text-foreground">{announcement.title}</td>
                   <td className="px-4 py-3 text-foreground-muted">{announcement.isPinned ? "Yes" : "No"}</td>
-                  <td className={`px-4 py-3 font-medium ${announcement.isActive ? "text-cyan" : "text-foreground-muted"}`}>
+                  <td className={`px-4 py-3 font-medium ${announcement.isActive ? "text-teal" : "text-foreground-muted"}`}>
                     {announcement.isActive ? "Yes" : "No"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-4">
                       <Link
                         href={`/admin/announcements/${announcement.id}/edit`}
-                        className="text-sm font-medium text-cyan hover:text-white"
+                        className="text-sm font-medium text-teal hover:text-foreground"
                       >
                         Edit
                       </Link>

@@ -10,7 +10,7 @@ export function EventCard({ event }: { event: Event }) {
     >
       <div className="flex items-center justify-between gap-3">
         {event.category && (
-          <span className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-cyan">
+          <span className="font-mono text-[11px] font-medium uppercase tracking-[0.14em] text-teal">
             {event.category}
           </span>
         )}

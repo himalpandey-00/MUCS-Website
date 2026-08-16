@@ -16,7 +16,7 @@ export default function UnauthorizedPage() {
         </p>
         <Link
           href="/admin/login"
-          className="mt-6 inline-block text-sm font-medium text-cyan hover:text-white"
+          className="mt-6 inline-block text-sm font-medium text-teal hover:text-foreground"
         >
           Back to sign in
         </Link>

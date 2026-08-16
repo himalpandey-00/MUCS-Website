@@ -15,7 +15,7 @@ export async function Footer() {
   const settings = await getSiteSettings();
 
   return (
-    <footer className="border-t border-border bg-charcoal">
+    <footer className="border-t border-border bg-surface-raised">
       <Container className="grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
         <div className="flex flex-col gap-4 lg:col-span-2">
           <Logo size={40} asLink={false} />

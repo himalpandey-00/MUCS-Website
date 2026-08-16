@@ -8,7 +8,7 @@ import { deleteEvent } from "./actions";
 export const metadata: Metadata = { title: "Events · Admin" };
 
 const STATUS_STYLES: Record<string, string> = {
-  PUBLISHED: "text-cyan",
+  PUBLISHED: "text-teal",
   DRAFT: "text-foreground-muted",
   CANCELLED: "text-coral",
 };
@@ -51,7 +51,7 @@ export default async function AdminEventsPage() {
                   <td className={`px-4 py-3 font-medium ${STATUS_STYLES[event.status] ?? ""}`}>{event.status}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-4">
-                      <Link href={`/admin/events/${event.id}/edit`} className="text-sm font-medium text-cyan hover:text-white">
+                      <Link href={`/admin/events/${event.id}/edit`} className="text-sm font-medium text-teal hover:text-foreground">
                         Edit
                       </Link>
                       <form action={deleteEvent.bind(null, event.id)}>

@@ -42,7 +42,7 @@ export default async function AdminHomePage() {
         <h2 className="font-heading text-sm font-bold uppercase tracking-wide text-foreground-muted">
           Also editable
         </h2>
-        <Link href="/admin/settings" className="mt-3 inline-block text-sm text-cyan hover:text-white">
+        <Link href="/admin/settings" className="mt-3 inline-block text-sm text-teal hover:text-foreground">
           Site settings — contact info, meeting details, socials →
         </Link>
       </div>

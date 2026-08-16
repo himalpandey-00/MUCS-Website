@@ -9,7 +9,7 @@ const base =
 const variants: Record<Variant, string> = {
   primary: "bg-murdoch-red text-white hover:bg-deep-red",
   secondary: "border border-border text-foreground hover:border-murdoch-red hover:text-murdoch-red",
-  ghost: "text-cyan hover:text-white",
+  ghost: "text-teal hover:text-foreground",
 };
 
 type CommonProps = {

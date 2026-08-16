@@ -5,39 +5,48 @@
    Provisional colour system — not the official Murdoch Brand Toolkit.
    Kept as CSS variables in one place so they can be swapped later without
    touching component code. See README.md "Design tokens" section.
+
+   Direction: "Paper light" — a warm off-white ground, not the black/
+   charcoal dark theme Phase 1 shipped with. Murdoch red and the teal/cyan
+   accents are unchanged from the original brief; only the background and
+   neutral system moved. Like the dark theme before it, this is a single
+   fixed identity (not a light/dark toggle) — see the prefers-color-scheme
+   block below.
    ========================================================================== */
 :root {
   /* brand palette (as supplied) */
   --murdoch-red: #e12744;
   --deep-red: #98152b;
-  --black: #070708;
-  --charcoal: #111116;
-  --white: #f7f7f8;
-  --muted: #a6a6af;
-  --teal: #008381;
-  --cyan: #09aea6;
-  --coral: #fa717d;
+  --teal: #006663; /* darkened from #008381 for text contrast on paper/white — see note below */
+  --cyan: #09aea6; /* kept at original brightness — fine for washes/borders, not for text (fails contrast on light bg, see globals.css usage note) */
+  --coral: #c23a52; /* darkened from the original #fa717d — that read fine as text on the old dark background, but fails contrast on paper/white; still a distinct rose from --murdoch-red */
+
+  /* neutral system for the paper-light direction */
+  --ink: #1b1815; /* primary text */
+  --paper: #f5f2ea; /* page background */
+  --white: #ffffff; /* card/section surfaces */
+  --sand: #efe9dc; /* raised surfaces — inputs, footer, sidebar */
+  --muted: #625c52; /* secondary text — meets AA on both --paper and --white */
+  --hairline: #e3ddcf;
 
   /* semantic roles built from the palette above — components should
      reference these, not the raw palette vars, so the "feel" of the site
      can be retuned centrally */
-  --background: var(--black);
-  --surface: var(--charcoal);
-  --surface-raised: #17171d;
-  --foreground: var(--white);
+  --background: var(--paper);
+  --surface: var(--white);
+  --surface-raised: var(--sand);
+  --foreground: var(--ink);
   --foreground-muted: var(--muted);
-  --border: #232329;
+  --border: var(--hairline);
   --accent: var(--murdoch-red);
   --accent-strong: var(--deep-red);
-  --accent-soft: color-mix(in srgb, var(--murdoch-red) 16%, transparent);
+  --accent-soft: color-mix(in srgb, var(--murdoch-red) 12%, transparent);
   --ring: var(--murdoch-red);
 }
 
 @theme inline {
   --color-murdoch-red: var(--murdoch-red);
   --color-deep-red: var(--deep-red);
-  --color-black: var(--black);
-  --color-charcoal: var(--charcoal);
   --color-white: var(--white);
   --color-muted: var(--muted);
   --color-teal: var(--teal);
@@ -62,12 +71,12 @@
   --container-content: 1200px;
 }
 
-@media (prefers-color-scheme: light) {
-  /* The brand direction is a fixed dark, premium theme (not a light/dark
-     toggle) — see brief section 6. This block intentionally does not
-     redefine colours; it exists only as a documented no-op so a future
-     light theme can be added in one place without hunting for hardcoded
-     colours in components. */
+@media (prefers-color-scheme: dark) {
+  /* The brand direction is a fixed light, premium theme (not a light/dark
+     toggle) — see brief section 6, now "paper light". This block
+     intentionally does not redefine colours; it exists only as a
+     documented no-op so a future dark variant can be added in one place
+     without hunting for hardcoded colours in components. */
 }
 
 * {
@@ -98,7 +107,7 @@ h6 {
 
 ::selection {
   background: color-mix(in srgb, var(--murdoch-red) 35%, transparent);
-  color: var(--white);
+  color: var(--ink);
 }
 
 :focus-visible {

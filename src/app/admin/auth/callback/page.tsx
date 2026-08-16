@@ -37,7 +37,7 @@ export default function AuthCallbackPage() {
             <p className="mt-2 text-sm text-foreground-muted">
               It may have expired or already been used. Request a new one from the sign-in page.
             </p>
-            <Link href="/admin/login" className="mt-6 inline-block text-sm font-medium text-cyan hover:text-white">
+            <Link href="/admin/login" className="mt-6 inline-block text-sm font-medium text-teal hover:text-foreground">
               Back to sign in
             </Link>
           </>

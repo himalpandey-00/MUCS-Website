@@ -35,12 +35,12 @@ export function LoginForm() {
           required
           autoComplete="email"
           autoFocus
-          className="w-full rounded-md border border-border bg-charcoal px-4 py-2.5 text-foreground placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-murdoch-red"
+          className="w-full rounded-md border border-border bg-surface-raised px-4 py-2.5 text-foreground placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-murdoch-red"
         />
       </div>
 
       {state.status === "success" && (
-        <p role="status" className="rounded-md border border-teal/40 bg-teal/10 px-4 py-3 text-sm text-cyan">
+        <p role="status" className="rounded-md border border-teal/40 bg-teal/10 px-4 py-3 text-sm text-teal">
           {state.message}
         </p>
       )}

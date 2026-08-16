@@ -20,7 +20,7 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border bg-black/85 backdrop-blur">
+    <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur">
       <Container className="flex h-20 items-center justify-between">
         <Logo size={44} />
 

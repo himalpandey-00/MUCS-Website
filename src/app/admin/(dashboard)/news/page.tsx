@@ -39,12 +39,12 @@ export default async function AdminNewsPage() {
               {articles.map((article) => (
                 <tr key={article.id} className="border-b border-border last:border-0">
                   <td className="px-4 py-3 font-medium text-foreground">{article.title}</td>
-                  <td className={`px-4 py-3 font-medium ${article.status === "PUBLISHED" ? "text-cyan" : "text-foreground-muted"}`}>
+                  <td className={`px-4 py-3 font-medium ${article.status === "PUBLISHED" ? "text-teal" : "text-foreground-muted"}`}>
                     {article.status}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-4">
-                      <Link href={`/admin/news/${article.id}/edit`} className="text-sm font-medium text-cyan hover:text-white">
+                      <Link href={`/admin/news/${article.id}/edit`} className="text-sm font-medium text-teal hover:text-foreground">
                         Edit
                       </Link>
                       <form action={deleteArticle.bind(null, article.id)}>

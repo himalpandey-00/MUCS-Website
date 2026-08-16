@@ -25,7 +25,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
                 href={social.href}
                 target={social.href.startsWith("mailto:") ? undefined : "_blank"}
                 rel="noreferrer noopener"
-                className="text-xs font-medium uppercase tracking-wide text-cyan hover:text-murdoch-red"
+                className="text-xs font-medium uppercase tracking-wide text-teal hover:text-murdoch-red"
               >
                 {social.label}
               </a>

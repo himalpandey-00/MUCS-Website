@@ -43,12 +43,12 @@ export default async function AdminTeamPage() {
                   <td className="px-4 py-3 font-medium text-foreground">{member.name}</td>
                   <td className="px-4 py-3 text-foreground-muted">{member.position}</td>
                   <td className="px-4 py-3 text-foreground-muted">{member.displayOrder}</td>
-                  <td className={`px-4 py-3 font-medium ${member.isActive ? "text-cyan" : "text-foreground-muted"}`}>
+                  <td className={`px-4 py-3 font-medium ${member.isActive ? "text-teal" : "text-foreground-muted"}`}>
                     {member.isActive ? "Yes" : "No"}
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-4">
-                      <Link href={`/admin/team/${member.id}/edit`} className="text-sm font-medium text-cyan hover:text-white">
+                      <Link href={`/admin/team/${member.id}/edit`} className="text-sm font-medium text-teal hover:text-foreground">
                         Edit
                       </Link>
                       <form action={deleteTeamMember.bind(null, member.id)}>

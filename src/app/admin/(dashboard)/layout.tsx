@@ -22,7 +22,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
 
   return (
     <div className="flex min-h-full flex-1 flex-col md:flex-row">
-      <aside className="flex w-full flex-col gap-4 border-b border-border bg-charcoal p-6 md:w-64 md:shrink-0 md:border-b-0 md:border-r">
+      <aside className="flex w-full flex-col gap-4 border-b border-border bg-surface-raised p-6 md:w-64 md:shrink-0 md:border-b-0 md:border-r">
         <div className="flex items-center gap-2">
           <Logo size={32} wordmark={false} asLink={false} />
           <span className="font-heading text-sm font-bold uppercase tracking-wide text-foreground-muted">
@@ -46,7 +46,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
           <p className="truncate text-foreground-muted" title={session.email}>
             {session.email}
           </p>
-          <Link href="/" className="text-cyan hover:text-white">
+          <Link href="/" className="text-teal hover:text-foreground">
             View public site
           </Link>
           <form action={signOutAdmin}>
