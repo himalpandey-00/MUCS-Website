@@ -50,15 +50,16 @@ export default async function OpengraphImage() {
           </div>
           <div
             style={{
+              display: "flex",
+              flexDirection: "column",
               fontSize: 64,
               fontWeight: 800,
               color: "#F7F7F8",
               lineHeight: 1.05,
             }}
           >
-            Cyber Security
-            <br />
-            Club
+            <span>Cyber Security</span>
+            <span>Club</span>
           </div>
         </div>
       </div>

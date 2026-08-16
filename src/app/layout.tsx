@@ -23,6 +23,15 @@ const jetbrainsMono = JetBrains_Mono({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
+// Every page reads content straight from the DB (events, team, news,
+// announcements, site settings via <Footer>) and none of that goes through
+// Next's fetch() cache, so Next has no signal to treat these routes as
+// dynamic on its own — left alone it prerenders them once at build time,
+// which would mean DB edits (new events, committee changes, a toggled
+// announcement) silently don't appear until the next deploy. Forcing the
+// whole tree dynamic here keeps "content lives in the DB, not the code" true.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
