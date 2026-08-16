@@ -1,0 +1,125 @@
+// MUCS — Murdoch Cyber Security Club
+// Phase 1 schema: public site content only (Event, TeamMember, NewsArticle,
+// Announcement, SiteSetting) plus ContactSubmission to back the Contact form.
+//
+// Deliberately NOT modelled yet (Phase 2+): User, Registration, Ticket,
+// Donation, Sponsor. Ids are cuid strings and models are kept independent
+// so those can be added later (e.g. Registration -> Event, User) without
+// reshaping what's here.
+//
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum EventStatus {
+  DRAFT
+  PUBLISHED
+  CANCELLED
+}
+
+enum ArticleStatus {
+  DRAFT
+  PUBLISHED
+}
+
+/// A club event (workshop, CTF night, talk, social). List + detail pages
+/// read only PUBLISHED events.
+model Event {
+  id            String      @id @default(cuid())
+  slug          String      @unique
+  title         String
+  category      String? // e.g. "Workshop", "CTF", "Talk", "Social"
+  summary       String
+  description   String      @db.Text
+  location      String?
+  startsAt      DateTime
+  endsAt        DateTime?
+  coverImageUrl String?
+  status        EventStatus @default(DRAFT)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@index([status, startsAt])
+}
+
+/// Committee / team member profile shown on the Team page.
+model TeamMember {
+  id            String   @id @default(cuid())
+  name          String
+  position      String
+  bio           String?  @db.Text
+  photoUrl      String?
+  email         String?
+  linkedinUrl   String?
+  githubUrl     String?
+  websiteUrl    String?
+  displayOrder  Int      @default(0)
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([isActive, displayOrder])
+}
+
+/// Longer-form news / recap post. List + detail pages read only
+/// PUBLISHED articles.
+model NewsArticle {
+  id            String        @id @default(cuid())
+  slug          String        @unique
+  title         String
+  excerpt       String
+  body          String        @db.Text
+  coverImageUrl String?
+  authorName    String?
+  status        ArticleStatus @default(DRAFT)
+  publishedAt   DateTime?
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  @@index([status, publishedAt])
+}
+
+/// Short-lived banner/notice (e.g. "Sign-ups open for O-Week"). Not a full
+/// article — no detail page, just surfaced inline on the site.
+model Announcement {
+  id        String    @id @default(cuid())
+  title     String
+  body      String    @db.Text
+  isPinned  Boolean   @default(false)
+  isActive  Boolean   @default(true)
+  startsAt  DateTime?
+  endsAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([isActive, isPinned])
+}
+
+/// Generic site-wide key/value store for small editable bits (contact
+/// email, meeting time/location, social links) that don't warrant their
+/// own table.
+model SiteSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String   @db.Text
+  updatedAt DateTime @updatedAt
+}
+
+/// Server-validated submissions from the public Contact form.
+model ContactSubmission {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  subject   String?
+  message   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

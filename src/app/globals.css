@@ -1,0 +1,112 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   MUCS design tokens
+   Provisional colour system — not the official Murdoch Brand Toolkit.
+   Kept as CSS variables in one place so they can be swapped later without
+   touching component code. See README.md "Design tokens" section.
+   ========================================================================== */
+:root {
+  /* brand palette (as supplied) */
+  --murdoch-red: #e12744;
+  --deep-red: #98152b;
+  --black: #070708;
+  --charcoal: #111116;
+  --white: #f7f7f8;
+  --muted: #a6a6af;
+  --teal: #008381;
+  --cyan: #09aea6;
+  --coral: #fa717d;
+
+  /* semantic roles built from the palette above — components should
+     reference these, not the raw palette vars, so the "feel" of the site
+     can be retuned centrally */
+  --background: var(--black);
+  --surface: var(--charcoal);
+  --surface-raised: #17171d;
+  --foreground: var(--white);
+  --foreground-muted: var(--muted);
+  --border: #232329;
+  --accent: var(--murdoch-red);
+  --accent-strong: var(--deep-red);
+  --accent-soft: color-mix(in srgb, var(--murdoch-red) 16%, transparent);
+  --ring: var(--murdoch-red);
+}
+
+@theme inline {
+  --color-murdoch-red: var(--murdoch-red);
+  --color-deep-red: var(--deep-red);
+  --color-black: var(--black);
+  --color-charcoal: var(--charcoal);
+  --color-white: var(--white);
+  --color-muted: var(--muted);
+  --color-teal: var(--teal);
+  --color-cyan: var(--cyan);
+  --color-coral: var(--coral);
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-foreground: var(--foreground);
+  --color-foreground-muted: var(--foreground-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+  --color-accent-soft: var(--accent-soft);
+  --color-ring: var(--ring);
+
+  --font-heading: var(--font-archivo), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, monospace;
+
+  --container-content: 1200px;
+}
+
+@media (prefers-color-scheme: light) {
+  /* The brand direction is a fixed dark, premium theme (not a light/dark
+     toggle) — see brief section 6. This block intentionally does not
+     redefine colours; it exists only as a documented no-op so a future
+     light theme can be added in one place without hunting for hardcoded
+     colours in components. */
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-heading), system-ui, sans-serif;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+}
+
+::selection {
+  background: color-mix(in srgb, var(--murdoch-red) 35%, transparent);
+  color: var(--white);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+a {
+  color: inherit;
+}
