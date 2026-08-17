@@ -156,12 +156,13 @@ async function main() {
   });
 
   // ---------------------------------------------------------------------
-  // Site settings (placeholder contact/meeting details — carried over
-  // from the design mock, NOT confirmed real club details. Replace via
-  // Supabase before launch.)
+  // Site settings — contact_email is real (the club's actual Gmail,
+  // also used as the Supabase Auth SMTP sender). The rest are still
+  // placeholder meeting/social details carried over from the design
+  // mock — replace via /admin/settings before launch.
   // ---------------------------------------------------------------------
   const settings: Record<string, string> = {
-    contact_email: "murdochcybersec@gmail.com",
+    contact_email: "mucs.murdoch@gmail.com",
     meeting_schedule: "Thursdays, 6:00pm",
     meeting_location: "Student Hub, Room 1.03, Murdoch University",
     discord_url: "https://discord.gg/murdochcyber",
