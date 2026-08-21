@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { requireAdmin } from "@/lib/admin/auth";
+import { requireAdmin, canManageTeamRoster } from "@/lib/admin/auth";
 import { signOutAdmin } from "@/lib/admin/sign-out";
 import { Logo } from "@/components/Logo";
 
@@ -19,6 +19,13 @@ const NAV_LINKS = [
 // group deliberately, since they must work for signed-out/non-admin users.
 export default async function AdminDashboardLayout({ children }: { children: ReactNode }) {
   const session = await requireAdmin();
+  // "Staff & Access" (who can sign in here, and role handover) is only
+  // useful — and only reachable, since the page itself is gated with
+  // requireTeamManager() — for ADMIN/PRESIDENT, so it's left out of the
+  // nav entirely for STAFF rather than shown as a dead link.
+  const navLinks = canManageTeamRoster(session.role)
+    ? [...NAV_LINKS, { href: "/admin/staff", label: "Staff & Access" }]
+    : NAV_LINKS;
 
   return (
     <div className="flex min-h-full flex-1 flex-col md:flex-row">
@@ -31,7 +38,7 @@ export default async function AdminDashboardLayout({ children }: { children: Rea
         </div>
 
         <nav aria-label="Admin" className="flex flex-wrap gap-1 md:flex-1 md:flex-col md:flex-nowrap">
-          {NAV_LINKS.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}

@@ -25,10 +25,17 @@ export function TeamMemberForm({
   action,
   member,
   submitLabel,
+  canManagePresident = true,
 }: {
   action: (prevState: TeamMemberFormState, formData: FormData) => Promise<TeamMemberFormState>;
   member?: TeamMemberFormValues;
   submitLabel: string;
+  // Defaults to true because the "new member" page that doesn't pass this
+  // is already gated to Admin/President by requireTeamManager() — only the
+  // edit page (open to every role) needs to pass the real value. Server
+  // side, updateTeamMember re-checks this independently regardless; this
+  // only controls whether the checkbox is editable in the UI.
+  canManagePresident?: boolean;
 }) {
   const [state, formAction] = useActionState(action, initialState);
 
@@ -109,19 +116,36 @@ export function TeamMemberForm({
       </div>
 
       <div className="flex flex-col gap-2">
-        <label htmlFor="isPresident" className="flex items-center gap-2 text-sm font-medium text-foreground">
-          <input
-            id="isPresident"
-            name="isPresident"
-            type="checkbox"
-            defaultChecked={member?.isPresident ?? false}
-            className="h-4 w-4 rounded border-border accent-murdoch-red"
-          />
-          Club President
-        </label>
-        <p className="text-xs text-foreground-muted">
-          Only one member can be president — checking this unchecks anyone else.
-        </p>
+        {canManagePresident ? (
+          <>
+            <label htmlFor="isPresident" className="flex items-center gap-2 text-sm font-medium text-foreground">
+              <input
+                id="isPresident"
+                name="isPresident"
+                type="checkbox"
+                defaultChecked={member?.isPresident ?? false}
+                className="h-4 w-4 rounded border-border accent-murdoch-red"
+              />
+              Club President
+            </label>
+            <p className="text-xs text-foreground-muted">
+              Only one member can be president — checking this unchecks anyone else.
+            </p>
+          </>
+        ) : (
+          // Not a checkbox at all (an HTML checkbox left `disabled` simply
+          // isn't submitted, which would silently clear this on save) — a
+          // plain status line plus a hidden field carrying the current
+          // value through unchanged. updateTeamMember re-checks this role
+          // requirement server-side regardless of what's rendered here.
+          <>
+            <p className="text-sm font-medium text-foreground">
+              Club President: {member?.isPresident ? "Yes" : "No"}
+            </p>
+            <p className="text-xs text-foreground-muted">Only an admin or the club president can change this.</p>
+            <input type="hidden" name="isPresident" value={member?.isPresident ? "on" : ""} />
+          </>
+        )}
       </div>
 
       <FormMessage status="error" message={state.status === "error" ? state.message : undefined} />

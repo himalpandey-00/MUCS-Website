@@ -4,7 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
-import { requireAdmin, requireTeamManager } from "@/lib/admin/auth";
+import { requireAdmin, requireTeamManager, canManageTeamRoster } from "@/lib/admin/auth";
 import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { uploadTeamPhoto, deleteTeamPhotoIfOwned, TeamPhotoUploadError } from "@/lib/storage/upload-team-photo";
 
@@ -199,14 +199,26 @@ export async function updateTeamMember(
   _prevState: TeamMemberFormState,
   formData: FormData
 ): Promise<TeamMemberFormState> {
-  await requireAdmin(); // Editing stays open to every dashboard role, not just ADMIN/PRESIDENT.
+  const session = await requireAdmin(); // Editing stays open to every dashboard role, not just ADMIN/PRESIDENT.
 
   const parsed = parseTeamMemberForm(formData);
   if (!parsed.success) {
     return { status: "error", message: "Please fix the errors below.", fieldErrors: parsed.error.flatten().fieldErrors };
   }
 
-  const existing = await prisma.teamMember.findUnique({ where: { id }, select: { photoUrl: true } });
+  const existing = await prisma.teamMember.findUnique({ where: { id }, select: { photoUrl: true, isPresident: true } });
+
+  // The one part of editing that ISN'T open to every role: changing who's
+  // president. Checked here (not just hidden in the UI — see
+  // TeamMemberForm's canManagePresident) because a hidden control is never
+  // a real security boundary on its own. Only enforced if the value is
+  // actually changing, so an unrelated edit (fixing a bio typo) by a Staff
+  // account never trips this.
+  const nextIsPresident = parsed.data.isPresident === "on";
+  if (existing && nextIsPresident !== existing.isPresident && !canManageTeamRoster(session.role)) {
+    const message = "Only an admin or the club president can change the Club President flag.";
+    return { status: "error", message, fieldErrors: { isPresident: [message] } };
+  }
 
   let data: TeamMemberData;
   try {

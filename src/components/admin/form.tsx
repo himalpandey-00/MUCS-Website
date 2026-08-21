@@ -68,14 +68,33 @@ export function FormMessage({ status, message }: { status: "success" | "error"; 
 // the native form submission proceed straight to the Server Action.
 export function DeleteButton({ confirmMessage = "Delete this? This can't be undone." }: { confirmMessage?: string }) {
   return (
+    <ConfirmButton confirmMessage={confirmMessage} className="text-sm font-medium text-coral hover:text-murdoch-red">
+      Delete
+    </ConfirmButton>
+  );
+}
+
+// Same confirm-then-submit pattern as DeleteButton, generalized for any
+// label/styling — used for the other irreversible-ish actions on the
+// Staff & Access page (granting Admin, stepping down, revoking access).
+export function ConfirmButton({
+  confirmMessage,
+  className,
+  children,
+}: {
+  confirmMessage: string;
+  className: string;
+  children: ReactNode;
+}) {
+  return (
     <button
       type="submit"
       onClick={(event) => {
         if (!confirm(confirmMessage)) event.preventDefault();
       }}
-      className="text-sm font-medium text-coral hover:text-murdoch-red"
+      className={className}
     >
-      Delete
+      {children}
     </button>
   );
 }
