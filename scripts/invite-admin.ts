@@ -30,13 +30,17 @@ async function main() {
     console.log(`Invited ${email} — Supabase user ${data.user?.id}.`);
   }
 
+  // This is the only place ADMIN is ever granted — never through the web
+  // UI. Team members auto-provisioned from the roster (see
+  // src/app/admin/(dashboard)/team/actions.ts) get STAFF or PRESIDENT
+  // instead, and that sync never touches an existing ADMIN row.
   await prisma.adminUser.upsert({
     where: { email },
-    update: { name: name ?? undefined },
-    create: { email, name },
+    update: { name: name ?? undefined, role: "ADMIN" },
+    create: { email, name, role: "ADMIN" },
   });
 
-  console.log(`${email} is on the AdminUser allowlist.`);
+  console.log(`${email} is on the AdminUser allowlist as ADMIN.`);
 }
 
 main()

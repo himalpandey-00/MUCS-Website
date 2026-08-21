@@ -2,6 +2,7 @@
 
 import { useActionState } from "react";
 import { Field, FormMessage, SubmitButton, inputClasses } from "@/components/admin/form";
+import { PhotoField } from "./PhotoField";
 import type { TeamMemberFormState } from "./actions";
 
 const initialState: TeamMemberFormState = { status: "idle" };
@@ -17,6 +18,7 @@ type TeamMemberFormValues = {
   websiteUrl: string | null;
   displayOrder: number;
   isActive: boolean;
+  isPresident: boolean;
 };
 
 export function TeamMemberForm({
@@ -46,15 +48,21 @@ export function TeamMemberForm({
       </Field>
 
       <div className="grid gap-5 sm:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <PhotoField currentPhotoUrl={member?.photoUrl} />
+          {state.fieldErrors?.photoUrl?.map((error) => (
+            <p key={error} role="alert" className="text-sm text-coral">
+              {error}
+            </p>
+          ))}
+          <p className="text-xs text-foreground-muted">Left blank, initials are shown instead.</p>
+        </div>
         <Field
-          label="Photo URL (optional)"
-          name="photoUrl"
-          errors={state.fieldErrors?.photoUrl}
-          hint="Left blank, initials are shown instead."
+          label="Email (optional)"
+          name="email"
+          errors={state.fieldErrors?.email}
+          hint="If set, they'll be invited to sign in at /admin."
         >
-          <input id="photoUrl" name="photoUrl" type="url" defaultValue={member?.photoUrl ?? ""} className={inputClasses} />
-        </Field>
-        <Field label="Email (optional)" name="email" errors={state.fieldErrors?.email}>
           <input id="email" name="email" type="email" defaultValue={member?.email ?? ""} className={inputClasses} />
         </Field>
       </div>
@@ -98,6 +106,22 @@ export function TeamMemberForm({
             Active — shown on the public Team page
           </label>
         </div>
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="isPresident" className="flex items-center gap-2 text-sm font-medium text-foreground">
+          <input
+            id="isPresident"
+            name="isPresident"
+            type="checkbox"
+            defaultChecked={member?.isPresident ?? false}
+            className="h-4 w-4 rounded border-border accent-murdoch-red"
+          />
+          Club President
+        </label>
+        <p className="text-xs text-foreground-muted">
+          Only one member can be president — checking this unchecks anyone else.
+        </p>
       </div>
 
       <FormMessage status="error" message={state.status === "error" ? state.message : undefined} />

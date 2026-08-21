@@ -31,6 +31,18 @@ enum ArticleStatus {
   PUBLISHED
 }
 
+/// Access level for AdminUser rows. ADMIN is granted only via
+/// scripts/invite-admin.ts (never through the web UI). PRESIDENT is kept in
+/// sync with whichever TeamMember has isPresident = true. STAFF is the
+/// default for anyone auto-provisioned by adding a TeamMember with an
+/// email. Only ADMIN/PRESIDENT can add or delete team members (see
+/// src/lib/admin/auth.ts's requireTeamManager()).
+enum AdminRole {
+  ADMIN
+  PRESIDENT
+  STAFF
+}
+
 /// A club event (workshop, CTF night, talk, social). List + detail pages
 /// read only PUBLISHED events.
 model Event {
@@ -64,6 +76,10 @@ model TeamMember {
   websiteUrl    String?
   displayOrder  Int      @default(0)
   isActive      Boolean  @default(true)
+  /// At most one TeamMember has this set at a time (enforced in
+  /// src/app/admin/(dashboard)/team/actions.ts, not at the DB level).
+  /// Drives the linked AdminUser's PRESIDENT role — see AdminRole.
+  isPresident   Boolean  @default(false)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -136,6 +152,10 @@ model AdminUser {
   id             String    @id @default(cuid())
   email          String    @unique
   name           String?
+  /// Gates team-roster add/delete (requireTeamManager()). Defaults to
+  /// STAFF for rows auto-created from a TeamMember email; only
+  /// scripts/invite-admin.ts ever grants ADMIN.
+  role           AdminRole @default(STAFF)
   /// Filled in on first successful sign-in; null until then.
   supabaseUserId String?   @unique
   /// Set alongside supabaseUserId on first sign-in. Not bumped on every

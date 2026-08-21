@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import { redirect } from "next/navigation";
+import type { AdminRole } from "@/generated/prisma/client";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { prisma } from "@/lib/prisma";
 
@@ -8,7 +9,18 @@ export type AdminSession = {
   email: string;
   name: string | null;
   adminUserId: string;
+  role: AdminRole;
 };
+
+// ADMIN and PRESIDENT can add/delete team members (see requireTeamManager
+// below); STAFF can do everything else in the dashboard (Events, News,
+// Announcements, Settings, and editing existing team members) but not
+// that. ADMIN is granted only via scripts/invite-admin.ts — never through
+// the web UI. PRESIDENT is kept in sync with whichever TeamMember has
+// isPresident = true (src/app/admin/(dashboard)/team/actions.ts).
+export function canManageTeamRoster(role: AdminRole): boolean {
+  return role === "ADMIN" || role === "PRESIDENT";
+}
 
 // Call from the admin layout AND from individual pages that need the
 // session (e.g. to greet the admin by name) — wrapped in React's cache()
@@ -50,8 +62,23 @@ export const requireAdmin = cache(async (): Promise<AdminSession> => {
     }
   }
 
-  return { email: adminUser.email, name: adminUser.name, adminUserId: adminUser.id };
+  return { email: adminUser.email, name: adminUser.name, adminUserId: adminUser.id, role: adminUser.role };
 });
+
+// Same as requireAdmin(), but additionally requires the ADMIN or PRESIDENT
+// role. Use this — not requireAdmin() — for anything that should be
+// restricted to team-roster management (currently: creating and deleting
+// team members). Render-time gating alone (e.g. hiding a button) is not a
+// security boundary since a request can be sent without going through the
+// UI, so every action that needs this must call it directly, not just the
+// page that renders the form.
+export async function requireTeamManager(): Promise<AdminSession> {
+  const session = await requireAdmin();
+  if (!canManageTeamRoster(session.role)) {
+    redirect("/admin/unauthorized?reason=role");
+  }
+  return session;
+}
 
 // Signed in via Supabase but not on the allowlist — distinct from "not
 // signed in" so the login page and the guard can redirect to different

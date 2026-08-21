@@ -2,23 +2,33 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { DeleteButton } from "@/components/admin/form";
+import { requireAdmin, canManageTeamRoster } from "@/lib/admin/auth";
 import { deleteTeamMember } from "./actions";
 
 export const metadata: Metadata = { title: "Team · Admin" };
 
 export default async function AdminTeamPage() {
-  const members = await prisma.teamMember.findMany({ orderBy: { displayOrder: "asc" } });
+  // requireAdmin() is React.cache()-wrapped, so this doesn't re-run the
+  // Supabase/Prisma lookups — the admin layout already called it once for
+  // this same request.
+  const [session, members] = await Promise.all([
+    requireAdmin(),
+    prisma.teamMember.findMany({ orderBy: { displayOrder: "asc" } }),
+  ]);
+  const canManage = canManageTeamRoster(session.role);
 
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1 className="font-heading text-2xl font-extrabold">Team</h1>
-        <Link
-          href="/admin/team/new"
-          className="inline-flex items-center justify-center rounded-md bg-murdoch-red px-4 py-2 text-sm font-heading font-bold uppercase tracking-wide text-white hover:bg-deep-red"
-        >
-          New member
-        </Link>
+        {canManage && (
+          <Link
+            href="/admin/team/new"
+            className="inline-flex items-center justify-center rounded-md bg-murdoch-red px-4 py-2 text-sm font-heading font-bold uppercase tracking-wide text-white hover:bg-deep-red"
+          >
+            New member
+          </Link>
+        )}
       </div>
 
       {members.length === 0 ? (
@@ -51,9 +61,11 @@ export default async function AdminTeamPage() {
                       <Link href={`/admin/team/${member.id}/edit`} className="text-sm font-medium text-teal hover:text-foreground">
                         Edit
                       </Link>
-                      <form action={deleteTeamMember.bind(null, member.id)}>
-                        <DeleteButton confirmMessage={`Remove "${member.name}"? This can't be undone.`} />
-                      </form>
+                      {canManage && (
+                        <form action={deleteTeamMember.bind(null, member.id)}>
+                          <DeleteButton confirmMessage={`Remove "${member.name}"? This can't be undone.`} />
+                        </form>
+                      )}
                     </div>
                   </td>
                 </tr>
