@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { TEAM_PHOTOS_BUCKET } from "@/lib/storage/team-photos";
 
-function initials(name: string) {
+export function initials(name: string) {
   return name
     .split(" ")
     .filter(Boolean)
@@ -20,7 +20,7 @@ function initials(name: string) {
 // not just skips rendering. `unoptimized` bypasses that pipeline and
 // renders a plain <img> instead, so an unrecognized host degrades to "just
 // shows the image" rather than "takes the page down."
-function isOwnBucketPhoto(url: string): boolean {
+export function isOwnBucketPhoto(url: string): boolean {
   return url.includes(`/storage/v1/object/public/${TEAM_PHOTOS_BUCKET}/`);
 }
 
