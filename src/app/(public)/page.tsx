@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
 import { ButtonLink } from "@/components/ui/Button";
-import { Tag } from "@/components/ui/Tag";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EventCard } from "@/components/EventCard";
 import { NewsCard } from "@/components/NewsCard";
@@ -43,7 +42,6 @@ export default async function HomePage() {
       <section className="border-b border-border">
         <Container className="grid gap-12 py-20 sm:py-28 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div className="flex flex-col gap-6">
-            <Tag>Murdoch University</Tag>
             <h1 className="text-4xl font-extrabold leading-[1.05] text-foreground sm:text-5xl lg:text-6xl">
               Defend the network.
               <br />
@@ -81,7 +79,6 @@ export default async function HomePage() {
       <section className="border-b border-border">
         <Container className="grid gap-10 py-20">
           <SectionHeading
-            kicker="Why join"
             title="Run by students, backed by the field"
             description="No experience required. Just curiosity and a willingness to break things in a lab, not in production."
           />
@@ -100,7 +97,7 @@ export default async function HomePage() {
       <section className="border-b border-border">
         <Container className="flex flex-col gap-10 py-20">
           <div className="flex flex-wrap items-end justify-between gap-6">
-            <SectionHeading kicker="Events" title="Upcoming on the calendar" />
+            <SectionHeading title="Upcoming on the calendar" />
             <ButtonLink href="/events" variant="secondary">
               View all events
             </ButtonLink>
@@ -122,7 +119,7 @@ export default async function HomePage() {
         <section className="border-b border-border">
           <Container className="flex flex-col gap-10 py-20">
             <div className="flex flex-wrap items-end justify-between gap-6">
-              <SectionHeading kicker="News" title="From the club" />
+              <SectionHeading title="From the club" />
               <ButtonLink href="/news" variant="secondary">
                 View all news
               </ButtonLink>

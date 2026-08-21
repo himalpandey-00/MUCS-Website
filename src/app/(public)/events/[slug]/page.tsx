@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Container } from "@/components/ui/Container";
-import { Tag } from "@/components/ui/Tag";
 import { ButtonLink } from "@/components/ui/Button";
 import { getEventBySlug } from "@/lib/data";
 import { formatEventRange } from "@/lib/format";
@@ -23,7 +22,6 @@ export default async function EventDetailPage({ params }: PageProps<"/events/[sl
   return (
     <Container className="flex flex-col gap-8 py-20">
       <div className="flex flex-col gap-4">
-        {event.category && <Tag>{event.category}</Tag>}
         <h1 className="text-3xl font-extrabold text-foreground sm:text-4xl">{event.title}</h1>
         <dl className="flex flex-wrap gap-x-8 gap-y-2 font-mono text-sm text-foreground-muted">
           <div className="flex gap-2">

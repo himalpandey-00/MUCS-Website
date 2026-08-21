@@ -16,7 +16,6 @@ export default async function ContactPage() {
     <Container className="grid gap-14 py-20 lg:grid-cols-[1fr_1.2fr]">
       <div className="flex flex-col gap-8">
         <SectionHeading
-          kicker="Contact"
           title="Get in touch"
           description="Questions about membership, events, or sponsorship — send us a message or reach out directly."
         />

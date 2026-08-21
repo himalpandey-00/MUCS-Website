@@ -33,7 +33,7 @@ export default function AboutPage() {
     <>
       <section className="border-b border-border">
         <Container className="flex flex-col gap-6 py-20">
-          <SectionHeading kicker="About" title="Who we are" />
+          <SectionHeading title="Who we are" />
           <div className="flex max-w-3xl flex-col gap-5 text-lg leading-relaxed text-foreground-muted">
             <p>
               The Murdoch Cyber Security Club (MUCS) is a student society dedicated to practical security
@@ -48,7 +48,7 @@ export default function AboutPage() {
 
       <section className="border-b border-border">
         <Container className="grid gap-10 py-20">
-          <SectionHeading kicker="What we do" title="Four things, done properly" />
+          <SectionHeading title="Four things, done properly" />
           <div className="grid gap-6 sm:grid-cols-2">
             {PILLARS.map((pillar) => (
               <div key={pillar.title} className="rounded-xl border border-border bg-surface p-6">
@@ -63,7 +63,6 @@ export default function AboutPage() {
       <section>
         <Container className="flex flex-col items-start gap-5 py-20">
           <SectionHeading
-            kicker="Get involved"
             title="Membership is free"
             description="Open to all Murdoch students — any degree, any year. Drop into a Thursday meetup or reach out directly."
           />
