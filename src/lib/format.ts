@@ -16,6 +16,12 @@ export function formatEventDate(date: Date) {
   return dateFormatter.format(date);
 }
 
+// Same day formatter, reused for non-event dates (e.g. AdminUser.lastSignInAt
+// on the Staff & Access page) that don't need the time component.
+export function formatShortDate(date: Date) {
+  return dateFormatter.format(date);
+}
+
 export function formatEventTime(date: Date) {
   return timeFormatter.format(date).replace(":00", "");
 }
