@@ -55,3 +55,9 @@ skills-lock.json
 Thumbs.db
 
 /src/generated/prisma
+
+# credential-like files kept locally, never committed
+Backup-codes gmail.txt
+README FOR ADDING ADMIN.txt
+gmail pswd.txt
+/supabase pswd/
