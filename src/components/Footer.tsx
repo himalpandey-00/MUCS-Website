@@ -81,7 +81,12 @@ export async function Footer() {
       <div className="border-t border-border py-6">
         <Container className="flex flex-col gap-2 text-xs text-foreground-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Murdoch Cyber Security Club. All rights reserved.</p>
-          <p>Independent student club, Murdoch University.</p>
+          <div className="flex items-center gap-4">
+            <p>Independent student club, Murdoch University.</p>
+            <Link href="/admin/login" className="hover:text-murdoch-red">
+              Staff Login
+            </Link>
+          </div>
         </Container>
       </div>
     </footer>
