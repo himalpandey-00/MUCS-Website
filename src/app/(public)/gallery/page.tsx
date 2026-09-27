@@ -22,6 +22,7 @@ export default async function GalleryPage({ searchParams }: PageProps<"/gallery"
     <section>
       <Container className="flex flex-col gap-10 py-20">
         <SectionHeading
+          className="reveal"
           title="Gallery"
           description="Workshops, CTF nights, talks and socials — moments from around the club."
         />

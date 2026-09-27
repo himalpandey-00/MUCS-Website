@@ -17,6 +17,7 @@ export default async function EventsPage() {
       <section className="border-b border-border">
         <Container className="flex flex-col gap-10 py-20">
           <SectionHeading
+            className="reveal"
             title="Upcoming on the calendar"
             description="Workshops, CTF nights, and talks — open to all members."
           />
@@ -37,7 +38,7 @@ export default async function EventsPage() {
       {past.length > 0 && (
         <section>
           <Container className="flex flex-col gap-10 py-20">
-            <SectionHeading title="Past events" />
+            <SectionHeading className="reveal" title="Past events" />
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {past.map((event) => (
                 <EventCard key={event.id} event={event} />

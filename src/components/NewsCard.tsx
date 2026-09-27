@@ -12,7 +12,7 @@ export function NewsCard({ article }: { article: NewsArticle }) {
   return (
     <Link
       href={`/news/${article.slug}`}
-      className="group flex flex-col gap-3 rounded-xl border border-border bg-surface p-6 transition-colors hover:border-murdoch-red/60"
+      className="reveal group flex flex-col gap-3 rounded-xl border border-border bg-surface p-6 transition-colors hover:border-murdoch-red/60"
     >
       {article.publishedAt && (
         <span className="font-mono text-[11px] text-foreground-muted">

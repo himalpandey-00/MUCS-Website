@@ -71,6 +71,86 @@
   --container-content: 1200px;
 }
 
+/* ==========================================================================
+   Scroll-driven animations
+   Pure CSS: each animation is tied to scroll position, not to time, so
+   there's no JavaScript and nothing waits for it — anything already on
+   screen at load renders in its finished state.
+
+   Every rule sits behind two gates, so the site looks exactly as it did
+   before for anyone who opts out or can't run it:
+   - prefers-reduced-motion: no-preference (respect the OS setting)
+   - @supports for animation-timeline AND animation-range (browsers
+     without full support, e.g. Firefox today, just get static content).
+
+   Declaration order matters: animation-timeline / animation-range MUST
+   come after the `animation` shorthand, which resets them (Lightning CSS
+   drops them otherwise). animation-duration: 1ms is for Firefox, which
+   ignores scroll timelines with a zero duration.
+
+   Only `opacity`, `translate` and `scale` are animated — never `transform`
+   — so these can't collide with the photo band's inline transforms or the
+   gallery's hover zoom. Apply `reveal` to headings, cards and small
+   blocks, never to whole grids/sections or long text: a tall element only
+   finishes its entrance once its bottom edge is on screen.
+   ========================================================================== */
+
+/* Fade + slide up as the element enters the bottom of the screen. */
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    translate: 0 1.5rem;
+  }
+}
+
+/* Homepage crest drifts down as the page scrolls up, so it lags behind
+   the page (parallax). Starts at its normal resting position — it's the
+   page's largest image, so it's never faded. */
+@keyframes crest-drift {
+  to {
+    translate: 0 3rem;
+  }
+}
+
+@keyframes glow-swell {
+  to {
+    scale: 1.15;
+  }
+}
+
+@utility reveal {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) and (animation-range: entry 10% entry 90%) {
+      animation: reveal-up linear both;
+      animation-duration: 1ms;
+      animation-timeline: view();
+      animation-range: entry 10% entry 90%;
+    }
+  }
+}
+
+@utility parallax-crest {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) and (animation-range: 0 60vh) {
+      animation: crest-drift linear both;
+      animation-duration: 1ms;
+      animation-timeline: scroll(root);
+      animation-range: 0 60vh;
+    }
+  }
+}
+
+@utility parallax-glow {
+  @media screen and (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: scroll()) and (animation-range: 0 60vh) {
+      animation: glow-swell linear both;
+      animation-duration: 1ms;
+      animation-timeline: scroll(root);
+      animation-range: 0 60vh;
+    }
+  }
+}
+
 @media (prefers-color-scheme: dark) {
   /* The brand direction is a fixed light, premium theme (not a light/dark
      toggle) — see brief section 6, now "paper light". This block

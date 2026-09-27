@@ -50,7 +50,7 @@ export function GalleryGrid({ photos }: { photos: PublicGalleryPhoto[] }) {
     <>
       <ul className="columns-2 gap-4 sm:columns-3 lg:columns-4">
         {photos.map((photo, i) => (
-          <li key={photo.id} className="mb-4 break-inside-avoid">
+          <li key={photo.id} className="reveal mb-4 break-inside-avoid">
             <a
               ref={(element) => {
                 tileRefs.current[i] = element;

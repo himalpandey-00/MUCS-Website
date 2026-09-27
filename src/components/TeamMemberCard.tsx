@@ -11,7 +11,7 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
   ].filter((s): s is { label: string; href: string } => Boolean(s));
 
   return (
-    <div className="flex flex-col overflow-hidden rounded-3xl border border-border bg-surface">
+    <div className="reveal flex flex-col overflow-hidden rounded-3xl border border-border bg-surface">
       {/* Photo block — fills this half edge to edge, no padding, clipped to
           the card's rounded corners via the parent's overflow-hidden.
           Always `unoptimized`: uploaded photos are already resized to an

@@ -33,7 +33,7 @@ export default function AboutPage() {
     <>
       <section className="border-b border-border">
         <Container className="flex flex-col gap-6 py-20">
-          <SectionHeading title="Who we are" />
+          <SectionHeading className="reveal" title="Who we are" />
           <div className="flex max-w-3xl flex-col gap-5 text-lg leading-relaxed text-foreground-muted">
             <p>
               The Murdoch Cyber Security Club (MUCS) is a student society dedicated to practical security
@@ -48,10 +48,10 @@ export default function AboutPage() {
 
       <section className="border-b border-border">
         <Container className="grid gap-10 py-20">
-          <SectionHeading title="Four things, done properly" />
+          <SectionHeading className="reveal" title="Four things, done properly" />
           <div className="grid gap-6 sm:grid-cols-2">
             {PILLARS.map((pillar) => (
-              <div key={pillar.title} className="rounded-xl border border-border bg-surface p-6">
+              <div key={pillar.title} className="reveal rounded-xl border border-border bg-surface p-6">
                 <h3 className="font-heading text-xl font-bold text-foreground">{pillar.title}</h3>
                 <p className="mt-2 text-sm text-foreground-muted">{pillar.body}</p>
               </div>
@@ -63,10 +63,11 @@ export default function AboutPage() {
       <section>
         <Container className="flex flex-col items-start gap-5 py-20">
           <SectionHeading
+            className="reveal"
             title="Membership is free"
             description="Open to all Murdoch students — any degree, any year. Drop into a Thursday meetup or reach out directly."
           />
-          <div className="flex flex-wrap gap-4">
+          <div className="reveal flex flex-wrap gap-4">
             <ButtonLink href="/events">See upcoming events</ButtonLink>
             <ButtonLink href="/contact" variant="secondary">
               Contact the committee

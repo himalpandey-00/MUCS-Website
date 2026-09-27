@@ -65,10 +65,10 @@ export default async function HomePage() {
               </ButtonLink>
             </div>
           </div>
-          <div className="relative mx-auto flex w-full max-w-sm items-center justify-center">
+          <div className="parallax-crest relative mx-auto flex w-full max-w-sm items-center justify-center">
             <div
               aria-hidden="true"
-              className="absolute inset-0 rounded-full bg-murdoch-red/20 blur-3xl"
+              className="parallax-glow absolute inset-0 rounded-full bg-murdoch-red/20 blur-3xl"
             />
             <Image
               src="/brand/mucs-crest.png"
@@ -87,12 +87,13 @@ export default async function HomePage() {
       <section className="border-b border-border">
         <Container className="grid gap-10 py-20">
           <SectionHeading
+            className="reveal"
             title="Run by students, backed by the field"
             description="No experience required. Just curiosity and a willingness to break things in a lab, not in production."
           />
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {FEATURES.map((feature) => (
-              <div key={feature.title} className="rounded-xl border border-border bg-surface p-6">
+              <div key={feature.title} className="reveal rounded-xl border border-border bg-surface p-6">
                 <h3 className="font-heading text-lg font-bold text-foreground">{feature.title}</h3>
                 <p className="mt-2 text-sm text-foreground-muted">{feature.body}</p>
               </div>
@@ -107,7 +108,7 @@ export default async function HomePage() {
       {/* Upcoming events */}
       <section className="border-b border-border">
         <Container className="flex flex-col gap-10 py-20">
-          <div className="flex flex-wrap items-end justify-between gap-6">
+          <div className="reveal flex flex-wrap items-end justify-between gap-6">
             <SectionHeading title="Upcoming on the calendar" />
             <ButtonLink href="/events" variant="secondary">
               View all events
@@ -129,7 +130,7 @@ export default async function HomePage() {
       {articles.length > 0 && (
         <section className="border-b border-border">
           <Container className="flex flex-col gap-10 py-20">
-            <div className="flex flex-wrap items-end justify-between gap-6">
+            <div className="reveal flex flex-wrap items-end justify-between gap-6">
               <SectionHeading title="From the club" />
               <ButtonLink href="/news" variant="secondary">
                 View all news
@@ -146,25 +147,27 @@ export default async function HomePage() {
 
       {/* CTA */}
       <section className="bg-murdoch-red">
-        <Container className="flex flex-col items-start gap-5 py-16 text-white">
-          <h2 className="text-3xl font-extrabold sm:text-4xl">Join the club</h2>
-          <p className="max-w-xl text-white/90">
-            Membership is free and open to all Murdoch students, any degree, any year. Sign up at O-Week or
-            drop into a Thursday meetup.
-          </p>
-          {/* Not <ButtonLink variant="secondary">: that variant's own
-              text-foreground/border-border classes and these override
-              classes both set the same properties, and which one wins is
-              decided by Tailwind's internal utility order, not by where
-              they sit in this class string — that's what produced the
-              white-on-white bug here. A self-contained className sidesteps
-              the conflict entirely. */}
-          <Link
-            href="/contact"
-            className="inline-flex items-center justify-center gap-2 rounded-md border border-white bg-white px-5 py-2.5 text-sm font-heading font-bold uppercase tracking-wide text-deep-red transition-colors duration-150 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-murdoch-red"
-          >
-            Get in touch
-          </Link>
+        <Container className="py-16 text-white">
+          <div className="reveal flex flex-col items-start gap-5">
+            <h2 className="text-3xl font-extrabold sm:text-4xl">Join the club</h2>
+            <p className="max-w-xl text-white/90">
+              Membership is free and open to all Murdoch students, any degree, any year. Sign up at O-Week or
+              drop into a Thursday meetup.
+            </p>
+            {/* Not <ButtonLink variant="secondary">: that variant's own
+                text-foreground/border-border classes and these override
+                classes both set the same properties, and which one wins is
+                decided by Tailwind's internal utility order, not by where
+                they sit in this class string — that's what produced the
+                white-on-white bug here. A self-contained className sidesteps
+                the conflict entirely. */}
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-md border border-white bg-white px-5 py-2.5 text-sm font-heading font-bold uppercase tracking-wide text-deep-red transition-colors duration-150 hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-murdoch-red"
+            >
+              Get in touch
+            </Link>
+          </div>
         </Container>
       </section>
     </>

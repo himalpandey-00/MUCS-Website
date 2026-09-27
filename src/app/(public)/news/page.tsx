@@ -15,7 +15,7 @@ export default async function NewsPage() {
   return (
     <section>
       <Container className="flex flex-col gap-10 py-20">
-        <SectionHeading title="From the club" />
+        <SectionHeading className="reveal" title="From the club" />
         {articles.length > 0 ? (
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {articles.map((article) => (

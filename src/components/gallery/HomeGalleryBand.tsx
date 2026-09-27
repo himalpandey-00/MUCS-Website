@@ -66,15 +66,17 @@ export function HomeGalleryBand({ photos }: { photos: PublicGalleryPhoto[] }) {
   const secondRow = fillRow(photos.filter((_, i) => i % 2 === 1));
 
   return (
-    <section className="overflow-hidden border-b border-border">
-      <Container className="flex flex-wrap items-end justify-between gap-6 pt-20">
-        <SectionHeading
-          title="Life at MUCS"
-          description="Workshops, CTF nights, talks and socials — a look at what we get up to."
-        />
-        <ButtonLink href="/gallery" variant="secondary">
-          View gallery
-        </ButtonLink>
+    <section className="overflow-clip border-b border-border">
+      <Container className="pt-20">
+        <div className="reveal flex flex-wrap items-end justify-between gap-6">
+          <SectionHeading
+            title="Life at MUCS"
+            description="Workshops, CTF nights, talks and socials — a look at what we get up to."
+          />
+          <ButtonLink href="/gallery" variant="secondary">
+            View gallery
+          </ButtonLink>
+        </div>
       </Container>
 
       <ScrollDrift className="flex flex-col gap-4 pb-20 pt-10">

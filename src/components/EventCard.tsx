@@ -6,7 +6,7 @@ export function EventCard({ event }: { event: Event }) {
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="group flex flex-col gap-3 rounded-xl border border-border bg-surface p-6 transition-colors hover:border-murdoch-red/60"
+      className="reveal group flex flex-col gap-3 rounded-xl border border-border bg-surface p-6 transition-colors hover:border-murdoch-red/60"
     >
       <div className="flex items-center justify-between gap-3">
         {event.category && (

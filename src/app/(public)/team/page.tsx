@@ -16,6 +16,7 @@ export default async function TeamPage() {
     <section>
       <Container className="flex flex-col gap-10 py-20">
         <SectionHeading
+          className="reveal"
           title="Run by students, for students"
           description="The current committee. Reach out to any of us on Discord or via the contact page."
         />
