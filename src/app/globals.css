@@ -96,6 +96,19 @@
     scroll-behavior: smooth;
   }
 
+  /* Respect the OS "reduce motion" setting for in-page jumps too. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  /* While a modal <dialog> (the gallery lightbox) is open, stop the page
+     behind it from scrolling. */
+  html:has(dialog[open]:modal) {
+    overflow: hidden;
+  }
+
   body {
     background: var(--background);
     color: var(--foreground);

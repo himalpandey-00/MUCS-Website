@@ -6,7 +6,13 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { EventCard } from "@/components/EventCard";
 import { NewsCard } from "@/components/NewsCard";
 import { AnnouncementBanner } from "@/components/AnnouncementBanner";
-import { getActiveAnnouncements, getPublishedArticles, getUpcomingEvents } from "@/lib/data";
+import { HomeGalleryBand } from "@/components/gallery/HomeGalleryBand";
+import {
+  getActiveAnnouncements,
+  getHomepageGalleryPhotos,
+  getPublishedArticles,
+  getUpcomingEvents,
+} from "@/lib/data";
 
 const FEATURES = [
   {
@@ -28,10 +34,11 @@ const FEATURES = [
 ];
 
 export default async function HomePage() {
-  const [announcements, upcomingEvents, articles] = await Promise.all([
+  const [announcements, upcomingEvents, articles, galleryPhotos] = await Promise.all([
     getActiveAnnouncements(),
     getUpcomingEvents(3),
     getPublishedArticles(2),
+    getHomepageGalleryPhotos(),
   ]);
 
   return (
@@ -68,7 +75,8 @@ export default async function HomePage() {
               alt="Murdoch Cyber Security Club crest"
               width={640}
               height={640}
-              priority
+              loading="eager"
+              fetchPriority="high"
               className="relative w-full max-w-[320px] rounded-full shadow-2xl"
             />
           </div>
@@ -92,6 +100,9 @@ export default async function HomePage() {
           </div>
         </Container>
       </section>
+
+      {/* Club photos — only once enough are marked "Show on homepage" */}
+      {galleryPhotos.length > 0 && <HomeGalleryBand photos={galleryPhotos} />}
 
       {/* Upcoming events */}
       <section className="border-b border-border">

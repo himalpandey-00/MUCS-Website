@@ -32,7 +32,7 @@ export function Logo({ size = 40, wordmark = true, asLink = true, className }: L
         alt="Murdoch Cyber Security Club crest"
         width={size}
         height={size}
-        priority
+        loading="eager"
         className="rounded-full"
         style={{ width: size, height: size }}
       />

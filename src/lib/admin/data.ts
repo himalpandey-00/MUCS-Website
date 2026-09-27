@@ -6,11 +6,12 @@ import { prisma } from "@/lib/prisma";
 // to see and edit drafts/inactive rows too.
 
 export async function getDashboardCounts() {
-  const [events, news, team, announcements] = await Promise.all([
+  const [events, news, team, announcements, gallery] = await Promise.all([
     prisma.event.count(),
     prisma.newsArticle.count(),
     prisma.teamMember.count(),
     prisma.announcement.count(),
+    prisma.galleryPhoto.count(),
   ]);
-  return { events, news, team, announcements };
+  return { events, news, team, announcements, gallery };
 }

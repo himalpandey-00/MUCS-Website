@@ -32,3 +32,15 @@ export function formatEventRange(startsAt: Date, endsAt: Date | null) {
   if (!endsAt) return `${day} · ${start}`;
   return `${day} · ${start}–${formatEventTime(endsAt)}`;
 }
+
+// "Himal Pandey Sharma" -> "HP": the placeholder shown when a team member
+// has no photo.
+export function initials(name: string) {
+  return name
+    .split(" ")
+    .filter(Boolean)
+    .map((part) => part[0])
+    .slice(0, 2)
+    .join("")
+    .toUpperCase();
+}

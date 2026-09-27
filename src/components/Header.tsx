@@ -6,14 +6,7 @@ import { usePathname } from "next/navigation";
 import { Logo } from "./Logo";
 import { Container } from "./ui/Container";
 import { ButtonLink } from "./ui/Button";
-
-const NAV_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/team", label: "Team" },
-  { href: "/events", label: "Events" },
-  { href: "/news", label: "News" },
-  { href: "/contact", label: "Contact" },
-];
+import { NAV_LINKS } from "./nav-links";
 
 export function Header() {
   const pathname = usePathname();
@@ -24,8 +17,8 @@ export function Header() {
       <Container className="flex h-20 items-center justify-between">
         <Logo size={44} />
 
-        <nav aria-label="Primary" className="hidden items-center gap-8 md:flex">
-          <ul className="flex items-center gap-8">
+        <nav aria-label="Primary" className="hidden items-center gap-6 lg:flex xl:gap-8">
+          <ul className="flex items-center gap-6 xl:gap-8">
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href || pathname.startsWith(`${link.href}/`);
               return (
@@ -54,7 +47,7 @@ export function Header() {
           aria-expanded={open}
           aria-controls="mobile-nav"
           aria-label={open ? "Close menu" : "Open menu"}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-foreground md:hidden"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-md border border-border text-foreground lg:hidden"
         >
           <svg
             aria-hidden="true"
@@ -70,7 +63,7 @@ export function Header() {
       </Container>
 
       {open && (
-        <nav id="mobile-nav" aria-label="Primary mobile" className="border-t border-border md:hidden">
+        <nav id="mobile-nav" aria-label="Primary mobile" className="border-t border-border lg:hidden">
           <Container className="flex flex-col gap-1 py-4">
             {NAV_LINKS.map((link) => {
               const active = pathname === link.href || pathname.startsWith(`${link.href}/`);

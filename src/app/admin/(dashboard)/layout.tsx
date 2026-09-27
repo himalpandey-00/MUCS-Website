@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/admin/events", label: "Events" },
   { href: "/admin/news", label: "News" },
   { href: "/admin/team", label: "Team" },
+  { href: "/admin/gallery", label: "Gallery" },
   { href: "/admin/announcements", label: "Announcements" },
   { href: "/admin/settings", label: "Settings" },
 ];

@@ -166,7 +166,9 @@ async function main() {
     meeting_schedule: "Thursdays, 6:00pm",
     meeting_location: "Student Hub, Room 1.03, Murdoch University",
     discord_url: "https://discord.gg/murdochcyber",
-    instagram_handle: "@murdochcybersec",
+    // Social links are full https:// URLs (see src/lib/social.ts); left
+    // blank until the club's real profiles are entered in admin settings.
+    instagram_url: "",
     campus_address: "Murdoch University, 90 South St, Murdoch WA 6150",
   };
 

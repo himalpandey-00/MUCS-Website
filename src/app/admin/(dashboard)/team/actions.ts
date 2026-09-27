@@ -70,10 +70,16 @@ type TeamMemberData = ReturnType<typeof toData>;
 // over whatever is in the photoUrl text field (see PhotoField.tsx: that
 // field stays mounted as a "paste a URL instead" fallback, so both can be
 // present at once). Throws TeamPhotoUploadError on a bad/oversized file.
-async function withUploadedPhoto(data: TeamMemberData, formData: FormData): Promise<TeamMemberData> {
+// Also returns the newly uploaded URL (if any) so the caller can remove the
+// file again if saving the row then fails, instead of leaving it orphaned.
+async function withUploadedPhoto(
+  data: TeamMemberData,
+  formData: FormData
+): Promise<{ data: TeamMemberData; uploadedUrl: string | null }> {
   const photoFile = formData.get("photoFile");
-  if (!(photoFile instanceof File) || photoFile.size === 0) return data;
-  return { ...data, photoUrl: await uploadTeamPhoto(photoFile) };
+  if (!(photoFile instanceof File) || photoFile.size === 0) return { data, uploadedUrl: null };
+  const uploadedUrl = await uploadTeamPhoto(photoFile);
+  return { data: { ...data, photoUrl: uploadedUrl }, uploadedUrl };
 }
 
 // Saves the row. If isPresident is being set, every other member's flag is
@@ -169,8 +175,9 @@ export async function createTeamMember(_prevState: TeamMemberFormState, formData
   }
 
   let data: TeamMemberData;
+  let uploadedUrl: string | null;
   try {
-    data = await withUploadedPhoto(toData(parsed.data), formData);
+    ({ data, uploadedUrl } = await withUploadedPhoto(toData(parsed.data), formData));
   } catch (error) {
     const message = error instanceof TeamPhotoUploadError ? error.message : "Photo upload failed.";
     return { status: "error", message, fieldErrors: { photoUrl: [message] } };
@@ -181,6 +188,7 @@ export async function createTeamMember(_prevState: TeamMemberFormState, formData
     result = await saveTeamMember(undefined, data);
   } catch (error) {
     console.error("Failed to create team member:", error);
+    await deleteTeamPhotoIfOwned(uploadedUrl);
     return { status: "error", message: "Something went wrong saving this profile." };
   }
 
@@ -221,8 +229,9 @@ export async function updateTeamMember(
   }
 
   let data: TeamMemberData;
+  let uploadedUrl: string | null;
   try {
-    data = await withUploadedPhoto(toData(parsed.data), formData);
+    ({ data, uploadedUrl } = await withUploadedPhoto(toData(parsed.data), formData));
   } catch (error) {
     const message = error instanceof TeamPhotoUploadError ? error.message : "Photo upload failed.";
     return { status: "error", message, fieldErrors: { photoUrl: [message] } };
@@ -233,6 +242,7 @@ export async function updateTeamMember(
     result = await saveTeamMember(id, data);
   } catch (error) {
     console.error("Failed to update team member:", error);
+    await deleteTeamPhotoIfOwned(uploadedUrl);
     return { status: "error", message: "Something went wrong saving this profile." };
   }
 
@@ -253,6 +263,7 @@ export async function deleteTeamMember(id: string) {
   await requireTeamManager(); // Only ADMIN/PRESIDENT can remove team members.
   const member = await prisma.teamMember.delete({ where: { id } });
   await revokeStaffAccount(member.email);
+  await deleteTeamPhotoIfOwned(member.photoUrl); // Best-effort; external URLs are left alone.
   revalidatePath("/admin/team");
   revalidatePath("/team");
   redirect("/admin/team");

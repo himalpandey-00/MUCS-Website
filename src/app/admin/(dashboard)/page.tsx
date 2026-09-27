@@ -10,6 +10,7 @@ const CARDS = [
   { href: "/admin/news", label: "News articles", countKey: "news" as const },
   { href: "/admin/team", label: "Team members", countKey: "team" as const },
   { href: "/admin/announcements", label: "Announcements", countKey: "announcements" as const },
+  { href: "/admin/gallery", label: "Gallery photos", countKey: "gallery" as const },
 ];
 
 export default async function AdminHomePage() {
@@ -25,7 +26,7 @@ export default async function AdminHomePage() {
         <p className="mt-1 text-sm text-foreground-muted">{session.email}</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {CARDS.map((card) => (
           <Link
             key={card.href}

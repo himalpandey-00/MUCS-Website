@@ -65,23 +65,23 @@ model Event {
 
 /// Committee / team member profile shown on the Team page.
 model TeamMember {
-  id            String   @id @default(cuid())
-  name          String
-  position      String
-  bio           String?  @db.Text
-  photoUrl      String?
-  email         String?
-  linkedinUrl   String?
-  githubUrl     String?
-  websiteUrl    String?
-  displayOrder  Int      @default(0)
-  isActive      Boolean  @default(true)
+  id           String   @id @default(cuid())
+  name         String
+  position     String
+  bio          String?  @db.Text
+  photoUrl     String?
+  email        String?
+  linkedinUrl  String?
+  githubUrl    String?
+  websiteUrl   String?
+  displayOrder Int      @default(0)
+  isActive     Boolean  @default(true)
   /// At most one TeamMember has this set at a time (enforced in
   /// src/app/admin/(dashboard)/team/actions.ts, not at the DB level).
   /// Drives the linked AdminUser's PRESIDENT role — see AdminRole.
-  isPresident   Boolean  @default(false)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  isPresident  Boolean  @default(false)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 
   @@index([isActive, displayOrder])
 }
@@ -149,17 +149,47 @@ model ContactSubmission {
 /// member-accounts phase can add its own Supabase Auth users without any
 /// of them silently gaining admin access.
 model AdminUser {
-  id             String    @id @default(cuid())
-  email          String    @unique
+  id             String         @id @default(cuid())
+  email          String         @unique
   name           String?
   /// Gates team-roster add/delete (requireTeamManager()). Defaults to
   /// STAFF for rows auto-created from a TeamMember email; only
   /// scripts/invite-admin.ts ever grants ADMIN.
-  role           AdminRole @default(STAFF)
+  role           AdminRole      @default(STAFF)
   /// Filled in on first successful sign-in; null until then.
-  supabaseUserId String?   @unique
+  supabaseUserId String?        @unique
   /// Set alongside supabaseUserId on first sign-in. Not bumped on every
   /// later request — "first seen", not a live last-active timestamp.
   lastSignInAt   DateTime?
-  createdAt      DateTime  @default(now())
+  createdAt      DateTime       @default(now())
+  galleryPhotos  GalleryPhoto[]
+}
+
+/// A club photo uploaded by staff (admin → Gallery). Shown on the public
+/// /gallery page and, when showOnHomepage is set, in the homepage photo
+/// band. The image files live in the public "gallery" Storage bucket — two
+/// WebP variants per photo, made server-side by src/lib/images/
+/// process-image.ts. Paths (not full URLs) are stored so the storage
+/// backend can change later without rewriting rows.
+model GalleryPhoto {
+  id             String     @id @default(cuid())
+  /// Also used as the image alt text; null falls back to a generic
+  /// description.
+  caption        String?
+  /// Large variant (≤1600px long edge), e.g. "<uuid>/large.webp".
+  imagePath      String
+  /// Small variant (≤640px long edge), e.g. "<uuid>/thumb.webp".
+  thumbPath      String
+  /// Pixel dimensions of the large variant — lets pages reserve the right
+  /// space before the image loads (no layout jump).
+  width          Int
+  height         Int
+  showOnHomepage Boolean    @default(true)
+  uploadedById   String?
+  uploadedBy     AdminUser? @relation(fields: [uploadedById], references: [id], onDelete: SetNull)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  @@index([showOnHomepage, createdAt])
+  @@index([createdAt])
 }

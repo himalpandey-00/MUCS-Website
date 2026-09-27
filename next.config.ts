@@ -1,12 +1,11 @@
 import path from "node:path";
 import type { NextConfig } from "next";
 
-// next/image (used by src/components/Avatar.tsx) blocks any external image
-// host by default — with no remotePatterns configured at all, EVERY pasted
-// photo URL silently failed to render, regardless of source. This allows
-// just our own Supabase Storage public bucket (see
-// src/lib/storage/team-photos.ts); a pasted URL from some other host still
-// won't render, same as before.
+// Our own photos (team photos, gallery) are resized server-side into WebP
+// and rendered with next/image's `unoptimized`, so they don't go through
+// the image optimizer at all (and don't use Vercel's optimization quota).
+// This allow-list only matters for any future optimized image served from
+// our public Supabase Storage buckets (src/lib/storage/buckets.ts).
 const supabaseHostname = process.env.NEXT_PUBLIC_SUPABASE_URL
   ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).hostname
   : undefined;
@@ -25,11 +24,12 @@ const nextConfig: NextConfig = {
       : [],
   },
   experimental: {
-    // Server Actions default to a 1MB request body cap — too small for a
-    // phone-camera team photo. createTeamMember/updateTeamMember
-    // (src/app/admin/(dashboard)/team/actions.ts) accept uploads up to
-    // TEAM_PHOTO_MAX_BYTES (5MB); this leaves headroom for multipart
-    // overhead and the rest of the form fields.
+    // Server Actions default to a 1MB request body cap. Photo uploads are
+    // shrunk in the browser to ~1 MB first (src/lib/images/
+    // prepare-upload.ts) and the server accepts at most MAX_UPLOAD_BYTES
+    // (4 MB, src/lib/images/limits.ts) — this leaves headroom for that plus
+    // multipart overhead and the rest of the form fields. (On Vercel a
+    // request body is capped at 4.5 MB regardless.)
     serverActions: {
       bodySizeLimit: "6mb",
     },

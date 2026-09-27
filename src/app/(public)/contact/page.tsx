@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/Container";
 import { SectionHeading } from "@/components/ui/SectionHeading";
+import { SocialLinks } from "@/components/SocialLinks";
 import { getSiteSettings } from "@/lib/data";
+import { socialLinksFromSettings } from "@/lib/social";
 import { ContactForm } from "./ContactForm";
 
 export const metadata: Metadata = {
@@ -42,18 +44,11 @@ export default async function ContactPage() {
               <dd className="text-foreground">{settings.meeting_location}</dd>
             </div>
           )}
-          {settings.discord_url && (
+          {socialLinksFromSettings(settings).length > 0 && (
             <div>
-              <dt className="text-muted">Discord</dt>
-              <dd>
-                <a
-                  href={settings.discord_url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="text-foreground hover:text-murdoch-red"
-                >
-                  {settings.discord_url.replace("https://", "")}
-                </a>
+              <dt className="text-muted">Find us online</dt>
+              <dd className="mt-2">
+                <SocialLinks settings={settings} />
               </dd>
             </div>
           )}

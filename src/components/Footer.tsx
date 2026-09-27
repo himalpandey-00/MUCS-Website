@@ -2,14 +2,8 @@ import Link from "next/link";
 import { getSiteSettings } from "@/lib/data";
 import { Logo } from "./Logo";
 import { Container } from "./ui/Container";
-
-const NAV_LINKS = [
-  { href: "/about", label: "About" },
-  { href: "/team", label: "Team" },
-  { href: "/events", label: "Events" },
-  { href: "/news", label: "News" },
-  { href: "/contact", label: "Contact" },
-];
+import { NAV_LINKS } from "./nav-links";
+import { SocialLinks } from "./SocialLinks";
 
 export async function Footer() {
   const settings = await getSiteSettings();
@@ -50,31 +44,8 @@ export async function Footer() {
             )}
             {settings.meeting_schedule && <li>{settings.meeting_schedule}</li>}
             {settings.meeting_location && <li>{settings.meeting_location}</li>}
-            {settings.discord_url && (
-              <li>
-                <a
-                  href={settings.discord_url}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="hover:text-murdoch-red"
-                >
-                  Discord
-                </a>
-              </li>
-            )}
-            {settings.instagram_handle && (
-              <li>
-                <a
-                  href={`https://instagram.com/${settings.instagram_handle.replace("@", "")}`}
-                  target="_blank"
-                  rel="noreferrer noopener"
-                  className="hover:text-murdoch-red"
-                >
-                  {settings.instagram_handle}
-                </a>
-              </li>
-            )}
           </ul>
+          <SocialLinks settings={settings} className="mt-5" />
         </div>
       </Container>
 

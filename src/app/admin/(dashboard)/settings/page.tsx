@@ -13,7 +13,8 @@ export default async function AdminSettingsPage() {
       <div>
         <h1 className="font-heading text-2xl font-extrabold">Site settings</h1>
         <p className="mt-1 text-sm text-foreground-muted">
-          Contact info, meeting details, and social links shown in the site footer.
+          Contact info and meeting details shown in the footer and on the Contact page, plus the club&apos;s
+          social links (shown as icons).
         </p>
       </div>
       <SettingsForm values={values} />

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import type { TeamMember } from "@/generated/prisma/client";
-import { initials, isOwnBucketPhoto } from "./Avatar";
+import { initials } from "@/lib/format";
 
 export function TeamMemberCard({ member }: { member: TeamMember }) {
   const socials = [
@@ -13,15 +13,19 @@ export function TeamMemberCard({ member }: { member: TeamMember }) {
   return (
     <div className="flex flex-col overflow-hidden rounded-3xl border border-border bg-surface">
       {/* Photo block — fills this half edge to edge, no padding, clipped to
-          the card's rounded corners via the parent's overflow-hidden. */}
+          the card's rounded corners via the parent's overflow-hidden.
+          Always `unoptimized`: uploaded photos are already resized to an
+          800px WebP (src/lib/storage/upload-team-photo.ts), and a pasted
+          external URL can't go through next/image's optimizer anyway (it
+          only allows configured hosts). This also keeps us off Vercel's
+          image-optimization quota. */}
       <div className="relative aspect-square w-full bg-surface-raised">
         {member.photoUrl ? (
           <Image
             src={member.photoUrl}
             alt={member.name}
             fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            unoptimized={!isOwnBucketPhoto(member.photoUrl)}
+            unoptimized
             className="object-cover"
           />
         ) : (
